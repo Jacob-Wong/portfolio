@@ -83,9 +83,84 @@
 
                         <div class="row">
                             <div class="col-md-10 col-md-offset-1">
-                                <div class="alert alert-success" role="alert">
-                                    Thank you {{ first_name }} Your message was successfully sent
-                                </div>
+                                <form
+                                    action="/submit_form"
+                                    method="post"
+                                    class="reveal-content"
+                                >
+                                    <div class="row">
+                                        <div class="col-md-7">
+                                            <div
+                                                class="alert alert-success"
+                                                role="alert"
+                                            >
+                                                Thank you {{ first_name }} Your
+                                                message was successfully sent
+                                            </div>
+                                        </div>
+                                        <div class="col-md-5 address-container">
+                                            <ul class="list-unstyled">
+                                                <li>
+                                                    <span class="fa-icon">
+                                                        <i
+                                                            class="fa fa-phone"
+                                                            aria-hidden="true"
+                                                        ></i>
+                                                    </span>
+                                                    +44 7442 588158
+                                                </li>
+                                                <li>
+                                                    <span class="fa-icon">
+                                                        <i
+                                                            class="fa fa-at"
+                                                            aria-hidden="true"
+                                                        ></i>
+                                                    </span>
+                                                    jacobwfk@gmail.com
+                                                </li>
+                                                <li>
+                                                    <span class="fa-icon">
+                                                        <i
+                                                            class="fa fa fa-map-marker"
+                                                            aria-hidden="true"
+                                                        ></i>
+                                                    </span>
+                                                    Bristol, Uninted Kingdom
+                                                </li>
+                                            </ul>
+                                            <h3>
+                                                Follow me on social networks
+                                            </h3>
+                                            <a
+                                                href="http://www.facebook.com"
+                                                title=""
+                                                class="fa-icon"
+                                            >
+                                                <i class="fa fa-facebook"></i>
+                                            </a>
+                                            <a
+                                                href="http://www.twitter.com"
+                                                title=""
+                                                class="fa-icon"
+                                            >
+                                                <i class="fa fa-twitter"></i>
+                                            </a>
+                                            <a
+                                                href="http://www.linkedin.com"
+                                                title=""
+                                                class="fa-icon"
+                                            >
+                                                <i class="fa fa-linkedin"></i>
+                                            </a>
+                                            <a href="" title="" class="fa-icon">
+                                                <i
+                                                    class="fa fa-github"
+                                                    aria-hidden="true"
+                                                ></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>
