@@ -2,7 +2,8 @@ from flask import Flask, render_template, redirect, request
 from flask_mongoengine import MongoEngine
 from pprint import pprint
 
-from model.form_input import FormInput
+from models.form_input import FormInput
+from utils.email_sender import send_email
 
 app = Flask(__name__)
 app.config['MONGODB_SETTINGS'] = {
@@ -27,12 +28,8 @@ def get_project(project_id):
 
 @app.post('/submit_form')
 def submit_form():
-    data = FormInput(**request.form.to_dict())
+    raw_data = request.form.to_dict()
+    data = FormInput(**raw_data)
     data.save(data)
+    send_email(data.email)
     return redirect('/contact_success')
-
-
-@app.get('/test_db')
-def test_db():
-
-    ...
