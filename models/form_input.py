@@ -2,7 +2,7 @@ from datetime import datetime
 import mongoengine as me
 
 
-class FormInput(me.Document):
+class ContactFormInput(me.Document):
     email = me.EmailField(required=True)
     message = me.StringField()
     name = me.StringField()

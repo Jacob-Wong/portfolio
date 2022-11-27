@@ -1,15 +1,13 @@
 from flask import Flask, render_template, redirect, request
 from flask_mongoengine import MongoEngine
-from pprint import pprint
 
-from models.form_input import FormInput
+from models.form_input import ContactFormInput
 from utils.email_sender import send_email
 
 app = Flask(__name__)
 app.config['MONGODB_SETTINGS'] = {
-    'db': 'test_portfolio',
-    'host': 'localhost',
-    'port': 27017
+    'host':
+        'mongodb+srv://dbUser:dbUserPassword@webapi.fxspe.mongodb.net/portfolio'
 }
 db = MongoEngine(app)
 
@@ -29,7 +27,7 @@ def get_project(project_id):
 @app.post('/submit_form')
 def submit_form():
     raw_data = request.form.to_dict()
-    data = FormInput(**raw_data)
+    data = ContactFormInput(**raw_data)
     data.save(data)
     send_email(data.email)
     return redirect('/contact_success')
