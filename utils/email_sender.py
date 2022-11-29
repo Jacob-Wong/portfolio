@@ -20,7 +20,7 @@ def send_email(data: dict, receiver_email='jacobwfk@gmail.com'):
     message_to_people[
         'Subject'] = '<no-reply> Thanks for reaching out to Jacob Wong!'
     message_to_people['From'] = sender_email
-    message_to_people['To'] = receiver_email
+    message_to_people['To'] = receiver_email = data.get('email')
     message_to_self = MIMEText(json.dumps(data))
     message_to_self['Subject'] = 'Someone just find you from you website'
     message_to_self['From'] = sender_email
