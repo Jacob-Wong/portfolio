@@ -1,10 +1,11 @@
-from flask import Flask, render_template, redirect, request
+from flask import Flask, render_template, redirect, request, send_file
 # from flask_mongoengine import MongoEngine
 
 # from models.form_input import ContactFormInput
 from utils.email_sender import send_email
 
 app = Flask(__name__)
+app.config['UPLOAD_FOLDER'] = './jacob_resume.pdf'
 # Disable due to pythonanywhere free account dones't support
 # app.config['MONGODB_SETTINGS'] = {
 #     'db':
@@ -21,10 +22,16 @@ def get_page(page='index'):
     return render_template(f'{page}.html')
 
 
-@app.route('/projects/<project_id>')
+@app.get('/projects/<project_id>')
 def get_project(project_id):
-    print(project_id)
     return render_template(f'projects/{project_id}.html')
+
+
+@app.get('/attachment/resume')
+def get_resume():
+    print('hi there')
+    return send_file('jacob_resume.pdf')
+
 
 
 @app.post('/submit_form')
