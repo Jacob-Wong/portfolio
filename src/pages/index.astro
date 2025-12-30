@@ -1,0 +1,125 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import CTAButtons from '../components/CTAButtons.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import { PERSONAL } from '../consts';
+
+// Get featured projects (top 3 by updatedAt/publishedAt, exclude drafts)
+const allProjects = await getCollection('projects', ({ data }) => {
+  return import.meta.env.PROD ? !data.draft : true;
+});
+
+const featuredProjects = allProjects
+  .sort((a, b) => {
+    const dateA = a.data.updatedAt ?? a.data.publishedAt;
+    const dateB = b.data.updatedAt ?? b.data.publishedAt;
+    return dateB.getTime() - dateA.getTime();
+  })
+  .slice(0, 3);
+---
+
+<BaseLayout>
+  <section class="py-16 md:py-24">
+    <div class="container-narrow">
+      <!-- Hero -->
+      <div class="space-y-6">
+        <h1 class="text-4xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-5xl">
+          Hi, I'm <span class="text-accent dark:text-accent-dark">{PERSONAL.name}</span>
+        </h1>
+
+        <p class="text-xl text-gray-600 dark:text-gray-400">
+          {PERSONAL.tagline}
+        </p>
+
+        <p class="max-w-2xl text-gray-600 dark:text-gray-400">
+          I'm a software engineer based in {PERSONAL.location}. I specialize in building
+          reliable, scalable systems and enjoy the intersection of backend engineering,
+          distributed systems, and developer experience.
+        </p>
+
+        <CTAButtons />
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Projects -->
+  <section class="border-t border-gray-200 bg-gray-50 py-16 dark:border-gray-800 dark:bg-gray-900/50 md:py-24">
+    <div class="container-wide">
+      <div class="mb-10 flex items-center justify-between">
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-white">
+          Featured Projects
+        </h2>
+        <a href="/projects" class="link text-sm font-medium">
+          View all →
+        </a>
+      </div>
+
+      <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {featuredProjects.map((project) => (
+          <ProjectCard project={project} />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- What I Do -->
+  <section class="py-16 md:py-24">
+    <div class="container-narrow">
+      <h2 class="mb-10 text-2xl font-bold text-gray-900 dark:text-white">
+        What I Focus On
+      </h2>
+
+      <div class="grid gap-8 sm:grid-cols-2">
+        <div class="space-y-3">
+          <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-100 dark:bg-blue-900/30">
+            <svg class="h-5 w-5 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01" />
+            </svg>
+          </div>
+          <h3 class="font-semibold text-gray-900 dark:text-white">Backend & Systems</h3>
+          <p class="text-sm text-gray-600 dark:text-gray-400">
+            Designing and building scalable backend services, APIs, and distributed systems.
+          </p>
+        </div>
+
+        <div class="space-y-3">
+          <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-green-100 dark:bg-green-900/30">
+            <svg class="h-5 w-5 text-green-600 dark:text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+            </svg>
+          </div>
+          <h3 class="font-semibold text-gray-900 dark:text-white">Frontend</h3>
+          <p class="text-sm text-gray-600 dark:text-gray-400">
+            Building responsive, accessible web applications with modern frameworks.
+          </p>
+        </div>
+
+        <div class="space-y-3">
+          <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-purple-100 dark:bg-purple-900/30">
+            <svg class="h-5 w-5 text-purple-600 dark:text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+            </svg>
+          </div>
+          <h3 class="font-semibold text-gray-900 dark:text-white">AI & ML Infrastructure</h3>
+          <p class="text-sm text-gray-600 dark:text-gray-400">
+            Building infrastructure for ML workloads, feature stores, and model serving.
+          </p>
+        </div>
+
+        <div class="space-y-3">
+          <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-orange-100 dark:bg-orange-900/30">
+            <svg class="h-5 w-5 text-orange-600 dark:text-orange-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+            </svg>
+          </div>
+          <h3 class="font-semibold text-gray-900 dark:text-white">DevOps & SRE</h3>
+          <p class="text-sm text-gray-600 dark:text-gray-400">
+            CI/CD pipelines, infrastructure as code, observability, and reliability engineering.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
