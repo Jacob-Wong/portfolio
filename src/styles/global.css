@@ -1,0 +1,99 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --color-bg: 255 255 255;
+    --color-text: 17 24 39;
+    --color-text-muted: 107 114 128;
+    --color-border: 229 231 235;
+  }
+
+  .dark {
+    --color-bg: 17 24 39;
+    --color-text: 243 244 246;
+    --color-text-muted: 156 163 175;
+    --color-border: 55 65 81;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-white text-gray-900 dark:bg-gray-900 dark:text-gray-100;
+    @apply antialiased;
+  }
+
+  /* Focus styles for accessibility */
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-accent dark:outline-accent-dark;
+  }
+
+  /* Skip to content link */
+  .skip-to-content {
+    @apply absolute -top-10 left-0 z-50 bg-accent px-4 py-2 text-white transition-all duration-200;
+  }
+
+  .skip-to-content:focus {
+    @apply top-0;
+  }
+}
+
+@layer components {
+  .container-narrow {
+    @apply mx-auto max-w-3xl px-4 sm:px-6;
+  }
+
+  .container-wide {
+    @apply mx-auto max-w-5xl px-4 sm:px-6;
+  }
+
+  .prose-custom {
+    @apply prose prose-gray dark:prose-invert max-w-none;
+    @apply prose-headings:font-semibold prose-headings:tracking-tight;
+    @apply prose-a:text-accent dark:prose-a:text-accent-dark prose-a:no-underline hover:prose-a:underline;
+    @apply prose-code:rounded prose-code:bg-gray-100 prose-code:px-1 prose-code:py-0.5 prose-code:font-normal dark:prose-code:bg-gray-800;
+    @apply prose-pre:bg-gray-900 dark:prose-pre:bg-gray-950;
+  }
+
+  .link {
+    @apply text-accent dark:text-accent-dark hover:underline focus:underline;
+  }
+
+  .btn {
+    @apply inline-flex items-center justify-center rounded-lg px-4 py-2 text-sm font-medium transition-colors duration-200;
+    @apply focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2;
+  }
+
+  .btn-primary {
+    @apply btn bg-accent text-white hover:bg-blue-600;
+    @apply dark:bg-accent-dark dark:text-gray-900 dark:hover:bg-blue-300;
+  }
+
+  .btn-secondary {
+    @apply btn border border-gray-300 bg-transparent text-gray-700;
+    @apply hover:bg-gray-100 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800;
+  }
+}
+
+/* Prose typography enhancements */
+.prose h2 {
+  @apply mt-10 scroll-mt-20;
+}
+
+.prose h3 {
+  @apply mt-8 scroll-mt-20;
+}
+
+/* Heading anchor links */
+.heading-anchor {
+  @apply ml-2 opacity-0 transition-opacity;
+}
+
+.prose h2:hover .heading-anchor,
+.prose h3:hover .heading-anchor {
+  @apply opacity-100;
+}
+
