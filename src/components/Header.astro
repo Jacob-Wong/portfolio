@@ -1,0 +1,89 @@
+---
+import { NAV_LINKS, SITE } from '../consts';
+import ThemeToggle from './ThemeToggle.astro';
+
+const currentPath = Astro.url.pathname;
+---
+
+<header class="sticky top-0 z-40 w-full border-b border-gray-200 bg-white/80 backdrop-blur dark:border-gray-800 dark:bg-gray-900/80">
+  <nav class="container-wide flex h-16 items-center justify-between" aria-label="Main navigation">
+    <a href="/" class="text-lg font-semibold text-gray-900 dark:text-white">
+      {SITE.author}
+    </a>
+
+    <!-- Desktop navigation -->
+    <div class="hidden items-center gap-6 md:flex">
+      {NAV_LINKS.map((link) => (
+        <a
+          href={link.href}
+          class:list={[
+            'text-sm font-medium transition-colors hover:text-accent dark:hover:text-accent-dark',
+            currentPath === link.href || (link.href !== '/' && currentPath.startsWith(link.href))
+              ? 'text-accent dark:text-accent-dark'
+              : 'text-gray-600 dark:text-gray-400',
+          ]}
+          aria-current={currentPath === link.href ? 'page' : undefined}
+        >
+          {link.label}
+        </a>
+      ))}
+      <ThemeToggle />
+    </div>
+
+    <!-- Mobile menu button -->
+    <div class="flex items-center gap-2 md:hidden">
+      <ThemeToggle />
+      <button
+        id="mobile-menu-btn"
+        type="button"
+        class="rounded-lg p-2 text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800"
+        aria-label="Open menu"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+      >
+        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile menu -->
+  <div
+    id="mobile-menu"
+    class="hidden border-t border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-900 md:hidden"
+  >
+    <div class="space-y-1 px-4 py-3">
+      {NAV_LINKS.map((link) => (
+        <a
+          href={link.href}
+          class:list={[
+            'block rounded-lg px-3 py-2 text-base font-medium transition-colors',
+            currentPath === link.href || (link.href !== '/' && currentPath.startsWith(link.href))
+              ? 'bg-gray-100 text-accent dark:bg-gray-800 dark:text-accent-dark'
+              : 'text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800',
+          ]}
+          aria-current={currentPath === link.href ? 'page' : undefined}
+        >
+          {link.label}
+        </a>
+      ))}
+    </div>
+  </div>
+</header>
+
+<script>
+  function initMobileMenu() {
+    const btn = document.getElementById('mobile-menu-btn');
+    const menu = document.getElementById('mobile-menu');
+
+    btn?.addEventListener('click', () => {
+      const isOpen = menu?.classList.toggle('hidden') === false;
+      btn.setAttribute('aria-expanded', String(isOpen));
+    });
+  }
+
+  initMobileMenu();
+  document.addEventListener('astro:after-swap', initMobileMenu);
+</script>
+
