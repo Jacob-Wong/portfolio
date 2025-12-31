@@ -9,7 +9,7 @@ export const PERSONAL = {
   tagline: "Software Engineer | Full-Stack Developer",
   location: "Bristol, UK",
   // TODO: Replace with your actual domain
-  domain: "{{YOUR_DOMAIN}}",
+  domain: "jacob-wong.dev",
 } as const;
 
 // Resume placeholders - replace these with your actual values

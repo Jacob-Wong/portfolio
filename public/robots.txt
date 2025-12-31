@@ -1,5 +1,5 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://{{YOUR_DOMAIN}}/sitemap-index.xml
+Sitemap: https://jacob-wong.dev/sitemap-index.xml
 

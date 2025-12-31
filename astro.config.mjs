@@ -5,7 +5,7 @@ import tailwind from '@astrojs/tailwind';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://{{YOUR_DOMAIN}}',
+  site: 'https://jacob-wong.dev',
   integrations: [
     mdx(),
     sitemap(),
