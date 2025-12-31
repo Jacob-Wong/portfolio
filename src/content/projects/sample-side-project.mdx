@@ -1,0 +1,77 @@
+---
+title: "Git Standup CLI"
+description: "A tiny CLI tool that shows what you worked on yesterday. Built it because I kept forgetting during standup meetings."
+publishedAt: 2024-09-15
+tags: ["Rust", "CLI", "Developer Tools"]
+projectType: "side-project"
+status: "completed"
+timeSpent: "A weekend"
+repoUrl: "https://github.com/yourusername/git-standup"
+---
+
+## Why I Made This
+
+Every morning standup, same story: "What did I work on yesterday?" 
+
+I'd scramble through my terminal history, check GitHub, maybe look at Slack messages. It was annoying. So I built a thing that just tells me.
+
+## What It Does
+
+Run `git-standup` in any git repo and it shows you:
+
+- Commits from yesterday (or any date range)
+- Which branches you touched
+- Files you modified
+
+That's it. Nothing fancy.
+
+```bash
+$ git-standup
+
+Yesterday you worked on:
+━━━━━━━━━━━━━━━━━━━━━━━━
+📁 feature/user-auth (3 commits)
+   • Add login form validation
+   • Fix password reset flow  
+   • Update auth middleware
+
+📁 main (1 commit)
+   • Bump version to 2.1.0
+
+12 files changed across 4 commits
+```
+
+## How I Built It
+
+First time using Rust for a CLI tool. Picked it because:
+1. I wanted to learn Rust
+2. Single binary = easy to distribute
+3. It's fast (not that this tool needs to be, but still)
+
+Used `clap` for argument parsing and `git2` for interacting with git repos. The git2 crate is a bit verbose but well-documented.
+
+### The Tricky Part
+
+Figuring out "yesterday" sounds simple until you realize:
+- What if it's Monday? Should it show Friday?
+- What about different timezones in commit timestamps?
+- What counts as "your" commits in a shared repo?
+
+I ended up just using author email matching and treating weekends as workdays. Good enough for my use case.
+
+## What I Learned
+
+- Rust's error handling is nice once you get used to `?` and `Result`
+- The `chrono` crate handles dates way better than I could
+- CLIs are a great way to learn a new language - small scope, immediate feedback
+
+## Try It
+
+```bash
+cargo install git-standup
+
+# Or download a binary from releases
+```
+
+Would love feedback if you try it out!
+

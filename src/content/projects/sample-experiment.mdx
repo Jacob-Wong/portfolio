@@ -1,0 +1,79 @@
+---
+title: "Playing with WebGPU"
+description: "Experimenting with WebGPU to render some pretty fractals in the browser. Mostly just wanted to see what the hype was about."
+publishedAt: 2024-11-20
+tags: ["WebGPU", "TypeScript", "Graphics"]
+projectType: "experiment"
+status: "experiment"
+timeSpent: "A few evenings"
+liveUrl: "https://yourusername.github.io/webgpu-fractals"
+repoUrl: "https://github.com/yourusername/webgpu-fractals"
+---
+
+## The Idea
+
+I kept seeing WebGPU posts on Hacker News and wondered if it was actually usable yet. Spoiler: it kind of is, but also kind of isn't.
+
+Decided to try rendering Mandelbrot fractals because:
+1. It's GPU-friendly (embarrassingly parallel)
+2. The math is simple enough that I could focus on the WebGPU parts
+3. Pretty pictures are motivating
+
+## What I Got Working
+
+A basic fractal renderer with:
+- Zoom with mouse wheel
+- Pan by dragging
+- Color palette switching (because why not)
+
+Performance is actually really good - way smoother than my old Canvas2D version.
+
+## The WebGPU Experience
+
+**The good:**
+- The API is cleaner than WebGL
+- Compute shaders are first-class citizens
+- TypeScript types are excellent
+
+**The rough:**
+- Only works in Chrome/Edge (as of late 2024)
+- Error messages are... cryptic
+- Lots of boilerplate for simple things
+
+Here's what a basic render pass looks like:
+
+```typescript
+const commandEncoder = device.createCommandEncoder();
+const passEncoder = commandEncoder.beginRenderPass({
+  colorAttachments: [{
+    view: context.getCurrentTexture().createView(),
+    loadOp: 'clear',
+    storeOp: 'store',
+  }]
+});
+passEncoder.setPipeline(pipeline);
+passEncoder.draw(6);
+passEncoder.end();
+device.queue.submit([commandEncoder.finish()]);
+```
+
+Not terrible, but not exactly concise either.
+
+## Random Things I Learned
+
+- WebGPU uses a coordinate system that's different from WebGL. Spent an embarrassing amount of time on this.
+- The shader language (WGSL) is new and documentation is sparse.
+- You can't just copy WebGL tutorials - the mental model is different.
+
+## Current State
+
+This is just an experiment - works in Chrome, breaks elsewhere, code is messy. But it was fun to build and I learned a lot about GPU programming fundamentals.
+
+Might clean it up someday. Probably won't.
+
+## Resources That Helped
+
+- [WebGPU Fundamentals](https://webgpufundamentals.org/) - Best intro I found
+- [WGSL Spec](https://www.w3.org/TR/WGSL/) - Dense but comprehensive
+- Various Discord servers for when I got stuck
+
