@@ -64,26 +64,34 @@ portfolio/
 
 ### Adding a New Project
 
-1. Create a new MDX file in `src/content/projects/`:
+1. Copy the appropriate template from `src/content/projects/`:
 
 ```bash
-touch src/content/projects/my-new-project.mdx
+# For a personal project or tool you built
+cp src/content/projects/side-project-template.mdx src/content/projects/my-project.mdx
+
+# For a deep technical write-up
+cp src/content/projects/case-study-template.mdx src/content/projects/my-project.mdx
+
+# For a learning/exploration project
+cp src/content/projects/experiment-template.mdx src/content/projects/my-project.mdx
 ```
 
-2. Add frontmatter and content:
+2. Edit the frontmatter and content. Key fields:
 
 ```mdx
 ---
 title: "My New Project"
-description: "Brief description of the project"
+description: "Brief description"
 publishedAt: 2024-01-01
 tags: ["TypeScript", "React"]
-role: "Full-Stack Engineer"
+projectType: "side-project"  # side-project | case-study | experiment
+status: "completed"          # completed | wip | archived (or omit)
 ---
 
-## Problem
+## Why I Made This
 
-Describe the problem...
+Your content...
 ```
 
 3. The project will automatically appear on the Projects page.

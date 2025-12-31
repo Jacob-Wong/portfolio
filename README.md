@@ -81,7 +81,20 @@ portfolio/
 
 ## Adding/Editing Projects
 
-Projects are stored as MDX files in `src/content/projects/`. Each project includes:
+Projects are stored as MDX files in `src/content/projects/`. There are three project types with different layouts and tones:
+
+| Type | Use When | Layout |
+|------|----------|--------|
+| `side-project` | Personal projects, tools, apps you built | Casual (no TOC) |
+| `case-study` | Deep technical write-ups with architecture decisions | Formal (with TOC) |
+| `experiment` | Learning projects, prototypes, "I wanted to try X" | Casual (no TOC) |
+
+### Templates
+
+Copy from the template files in `src/content/projects/`:
+- `case-study-template.mdx` - Formal technical deep-dive
+- `side-project-template.mdx` - Casual "here's what I built"
+- `experiment-template.mdx` - Learning/exploration focused
 
 ### Frontmatter Schema
 
@@ -90,31 +103,35 @@ Projects are stored as MDX files in `src/content/projects/`. Each project includ
 title: "Project Title"
 description: "Brief description"
 publishedAt: 2024-01-01
-updatedAt: 2024-06-01  # optional
+updatedAt: 2024-06-01      # optional
 tags: ["TypeScript", "React"]
-role: "Full-Stack Engineer"  # optional
+
+# Project classification
+projectType: "side-project"  # side-project | case-study | experiment
+status: "completed"          # completed | wip | archived (optional)
+timeSpent: "A weekend"       # optional, casual time context
+
+# Links
 repoUrl: "https://github.com/..."  # optional
-liveUrl: "https://..."  # optional
-highlights:  # optional
+liveUrl: "https://..."             # optional
+
+# Case-study specific (optional for other types)
+role: "Full-Stack Engineer"
+highlights:
   - "Key achievement 1"
   - "Key achievement 2"
+
 draft: false  # optional, defaults to false
 ---
 ```
 
-### Case Study Sections
+### Content Structure
 
-Each case study should include:
-- Problem
-- Context
-- Role & Scope
-- Tech Stack
-- Architecture
-- Key Decisions & Trade-offs
-- Challenges
-- Results
-- What I'd Improve
-- Links
+**For case studies** (formal, use headings for TOC):
+- Problem → Context → Architecture → Key Decisions → Challenges → Results → What I'd Improve
+
+**For side projects & experiments** (casual, flexible):
+- Why I Made This → How It Works → What I Learned → Current State
 
 ## Customization
 
