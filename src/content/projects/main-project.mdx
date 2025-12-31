@@ -1,17 +1,38 @@
 ---
+# =============================================================================
+# CASE-STUDY TEMPLATE
+# =============================================================================
+# Use projectType: "case-study" when:
+#   - You want to do a deep technical write-up
+#   - There are interesting architecture decisions to discuss
+#   - You have metrics and results to share
+#   - It's professional work you can publicly discuss (or detailed personal work)
+#
+# This uses the formal CaseStudyLayout (with TOC, structured sections)
+# Suggested sections: Problem, Context, Architecture, Key Decisions,
+#                     Challenges, Results, What I'd Improve
+# =============================================================================
+
 title: "Distributed Task Orchestration Platform"
 description: "A high-throughput task orchestration system handling millions of jobs daily with sub-second scheduling latency."
 publishedAt: 2024-06-15
 updatedAt: 2024-12-01
 tags: ["Go", "Kubernetes", "Redis", "PostgreSQL", "gRPC", "Prometheus"]
-projectType: "case-study"
-status: "completed"
-role: "Tech Lead / Backend Engineer"
-repoUrl: "https://github.com/{{GITHUB_USERNAME}}/task-orchestrator"
-highlights:
+
+# Project classification
+projectType: "case-study"    # Options: side-project, case-study, experiment
+status: "completed"          # Options: completed, wip, archived (or leave empty)
+
+# Case-study specific fields
+role: "Tech Lead / Backend Engineer"  # Your role in the project
+highlights:                            # Key achievements (shown in layout)
   - "Achieved 99.99% uptime over 12 months"
   - "Reduced scheduling latency from 5s to 200ms"
   - "Scaled to 10M+ daily job executions"
+
+# Links
+repoUrl: "https://github.com/yourusername/task-orchestrator"
+# liveUrl: "https://..."  # Uncomment if applicable
 ---
 
 ## Problem
