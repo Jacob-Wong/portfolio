@@ -1,0 +1,72 @@
+---
+import type { GetStaticPaths, Page } from 'astro';
+import { getCollection, type CollectionEntry } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
+import Pagination from '../../components/Pagination.astro';
+
+export const getStaticPaths = (async ({ paginate }) => {
+  // Get all projects, sorted by updatedAt/publishedAt, exclude drafts in production
+  const allProjects = await getCollection('projects', ({ data }) => {
+    return import.meta.env.PROD ? !data.draft : true;
+  });
+
+  const sortedProjects = allProjects.sort((a, b) => {
+    const dateA = a.data.updatedAt ?? a.data.publishedAt;
+    const dateB = b.data.updatedAt ?? b.data.publishedAt;
+    return dateB.getTime() - dateA.getTime();
+  });
+
+  // Paginate with 9 items per page
+  return paginate(sortedProjects, { pageSize: 9 });
+}) satisfies GetStaticPaths;
+
+interface Props {
+  page: Page<CollectionEntry<'projects'>>;
+}
+
+const { page } = Astro.props;
+---
+
+<BaseLayout
+  title={page.currentPage === 1 ? 'Projects' : `Projects - Page ${page.currentPage}`}
+  description="Explore my engineering projects - case studies on distributed systems, web applications, and ML infrastructure."
+>
+  <section class="py-12 md:py-16">
+    <div class="container-wide">
+      <div class="mx-auto max-w-3xl text-center">
+        <h1 class="text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl">
+          Projects
+        </h1>
+        <p class="mt-4 text-lg text-gray-600 dark:text-gray-400">
+          A collection of projects I've worked on. Each case study includes the problem, 
+          approach, technical decisions, and lessons learned.
+        </p>
+        {page.total > 0 && (
+          <p class="mt-2 text-sm text-gray-500 dark:text-gray-500">
+            Showing {page.start + 1}-{page.end + 1} of {page.total} projects
+          </p>
+        )}
+      </div>
+
+      <div class="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {page.data.map((project) => (
+          <ProjectCard project={project} />
+        ))}
+      </div>
+
+      {page.data.length === 0 && (
+        <p class="mt-12 text-center text-gray-600 dark:text-gray-400">
+          No projects yet. Check back soon!
+        </p>
+      )}
+
+      <Pagination
+        currentPage={page.currentPage}
+        lastPage={page.lastPage}
+        baseUrl="/projects"
+      />
+    </div>
+  </section>
+</BaseLayout>
+
