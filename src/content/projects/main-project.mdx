@@ -1,0 +1,112 @@
+---
+title: "Distributed Task Orchestration Platform"
+description: "A high-throughput task orchestration system handling millions of jobs daily with sub-second scheduling latency."
+publishedAt: 2024-06-15
+updatedAt: 2024-12-01
+tags: ["Go", "Kubernetes", "Redis", "PostgreSQL", "gRPC", "Prometheus"]
+role: "Tech Lead / Backend Engineer"
+repoUrl: "https://github.com/{{GITHUB_USERNAME}}/task-orchestrator"
+highlights:
+  - "Achieved 99.99% uptime over 12 months"
+  - "Reduced scheduling latency from 5s to 200ms"
+  - "Scaled to 10M+ daily job executions"
+---
+
+## Problem
+
+The existing batch processing system was struggling to keep up with growing demands. Jobs were frequently delayed, failures were difficult to debug, and the monolithic architecture made it impossible to scale individual components. Teams were losing hours waiting for data pipelines to complete.
+
+## Context
+
+This project was initiated as part of a broader infrastructure modernization effort. The legacy system was a Python-based cron scheduler that had grown organically over 5 years. It handled everything from data ETL jobs to report generation, but was never designed for the scale we needed.
+
+## Role & Scope
+
+As Tech Lead, I was responsible for:
+- Architecture design and technical decision-making
+- Building the core scheduling engine
+- Mentoring 2 junior engineers on the team
+- Coordinating with Platform and SRE teams for deployment
+
+The project spanned 8 months from design to production rollout.
+
+## Tech Stack
+
+| Component | Technology | Rationale |
+|-----------|------------|-----------|
+| Core Service | Go | Performance, concurrency model |
+| Job Queue | Redis Streams | Persistence, consumer groups |
+| Metadata Store | PostgreSQL | ACID compliance, complex queries |
+| Communication | gRPC | Type safety, bi-directional streaming |
+| Orchestration | Kubernetes | Auto-scaling, self-healing |
+| Observability | Prometheus + Grafana | Industry standard, team familiarity |
+
+## Architecture
+
+The system follows an event-driven architecture with clear separation of concerns:
+
+1. **API Gateway**: Handles job submission, validation, and authentication
+2. **Scheduler**: Distributes jobs based on priority and resource availability
+3. **Worker Pool**: Executes jobs with automatic retry and timeout handling
+4. **State Manager**: Maintains job state and handles failure recovery
+
+Key design principles:
+- **Idempotency**: Every operation can be safely retried
+- **Backpressure**: Workers signal capacity to prevent overload
+- **Graceful degradation**: System continues operating with reduced capacity during partial failures
+
+## Key Decisions & Trade-offs
+
+### Redis Streams over Kafka
+
+**Decision**: Use Redis Streams instead of Kafka for the job queue.
+
+**Trade-off**: We traded some durability guarantees for operational simplicity. Redis Streams provided "good enough" persistence while being significantly easier to operate and debug.
+
+**Outcome**: Reduced infrastructure complexity by 40% and eliminated the need for a dedicated Kafka operations team.
+
+### Polling vs Push for Job Distribution
+
+**Decision**: Implemented a hybrid approach—workers poll for jobs but receive push notifications for high-priority tasks.
+
+**Trade-off**: Added complexity to handle both patterns, but gained the benefits of each.
+
+**Outcome**: 95th percentile latency for priority jobs dropped from 2s to 50ms.
+
+## Challenges
+
+### Challenge 1: Exactly-Once Processing
+
+**Problem**: Ensuring jobs execute exactly once in a distributed system with network partitions and worker failures.
+
+**Solution**: Implemented a lease-based ownership model with fencing tokens. Each job acquisition returns a monotonically increasing token that must be presented when marking completion.
+
+### Challenge 2: Hot Partition Problem
+
+**Problem**: Certain job types created hotspots, overwhelming specific worker nodes.
+
+**Solution**: Implemented consistent hashing with virtual nodes and added jitter to job scheduling. Also added dynamic rebalancing based on queue depth.
+
+## Results
+
+| Metric | Before | After | Improvement |
+|--------|--------|-------|-------------|
+| Daily job capacity | 500K | 10M+ | 20x |
+| Scheduling latency (p99) | 5.2s | 180ms | 29x |
+| Job failure rate | 2.3% | 0.1% | 23x |
+| Mean time to recovery | 45min | 2min | 22x |
+| On-call pages/week | 12 | 1 | 12x |
+
+## What I'd Improve
+
+1. **Better testing infrastructure**: While we had good unit test coverage, integration testing was manual and time-consuming. I'd invest in a proper staging environment with synthetic job generation.
+
+2. **More granular SLOs**: We tracked overall latency but should have defined SLOs per job type. Some jobs are latency-sensitive while others are throughput-sensitive.
+
+3. **Earlier observability investment**: We added distributed tracing late in the project. Having it from day one would have accelerated debugging significantly.
+
+## Links
+
+- [GitHub Repository](https://github.com/{{GITHUB_USERNAME}}/task-orchestrator)
+- [Architecture Decision Records](/docs/adr/)
+

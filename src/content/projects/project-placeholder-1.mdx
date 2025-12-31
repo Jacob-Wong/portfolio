@@ -1,0 +1,102 @@
+---
+title: "Real-Time Analytics Dashboard"
+description: "A customer-facing analytics platform providing real-time insights with sub-second query latency on billions of events."
+publishedAt: 2024-03-10
+updatedAt: 2024-09-15
+tags: ["TypeScript", "React", "ClickHouse", "WebSocket", "Node.js", "D3.js"]
+role: "Full-Stack Engineer"
+repoUrl: "https://github.com/{{GITHUB_USERNAME}}/analytics-dashboard"
+liveUrl: "https://analytics-demo.{{YOUR_DOMAIN}}"
+highlights:
+  - "Query latency under 200ms for 95th percentile"
+  - "Handles 100K concurrent WebSocket connections"
+  - "Reduced data processing costs by 60%"
+---
+
+## Problem
+
+Product teams needed real-time visibility into user behavior, but the existing analytics solution had 24-hour data lag. This made it impossible to react quickly to issues or measure the impact of changes. Teams were making decisions based on stale data.
+
+## Context
+
+The company was scaling rapidly, ingesting over 1 billion events per day. The existing Redshift-based solution couldn't keep up with query demands, and costs were spiraling. We needed a solution that could provide real-time insights without breaking the budget.
+
+## Role & Scope
+
+As the lead Full-Stack Engineer, I was responsible for:
+- Designing the real-time data pipeline
+- Building the React-based dashboard frontend
+- Implementing WebSocket infrastructure for live updates
+- Performance optimization and query tuning
+
+## Tech Stack
+
+| Layer | Technology | Purpose |
+|-------|------------|---------|
+| Frontend | React + TypeScript | Type-safe component development |
+| Visualization | D3.js + Recharts | Custom charts and graphs |
+| Real-time | WebSocket + Redis Pub/Sub | Live data streaming |
+| Query Engine | ClickHouse | OLAP queries on event data |
+| API | Node.js + tRPC | Type-safe API layer |
+
+## Architecture
+
+The system uses a lambda architecture combining batch and streaming layers:
+
+1. **Ingestion Layer**: Kafka consumers normalize and validate incoming events
+2. **Streaming Layer**: Real-time aggregations updated every second
+3. **Batch Layer**: Hourly compaction for historical queries
+4. **Serving Layer**: Unified API abstracting both layers
+
+## Key Decisions & Trade-offs
+
+### ClickHouse over TimescaleDB
+
+**Decision**: Chose ClickHouse for the analytical query engine.
+
+**Trade-off**: ClickHouse has a steeper learning curve and less mature ecosystem, but offers significantly better performance for our query patterns.
+
+**Outcome**: 50x improvement in query performance compared to our Redshift baseline.
+
+### Custom Visualization Components
+
+**Decision**: Built custom D3.js components instead of using a charting library.
+
+**Trade-off**: Higher development time but complete control over rendering and animations.
+
+**Outcome**: Achieved 60fps animations even with 100K+ data points.
+
+## Challenges
+
+### Challenge 1: WebSocket Scaling
+
+**Problem**: Initial architecture couldn't handle more than 10K concurrent connections per node.
+
+**Solution**: Implemented connection pooling with Redis Pub/Sub fan-out and horizontal scaling across multiple WebSocket servers.
+
+### Challenge 2: Query Timeout Management
+
+**Problem**: Complex queries from power users would time out and impact other users.
+
+**Solution**: Implemented query cost estimation and automatic query rewriting for expensive patterns. Added query queuing for resource-intensive requests.
+
+## Results
+
+- **Query latency**: p95 under 200ms (down from 30s)
+- **Data freshness**: Real-time (down from 24 hours)
+- **Concurrent users**: 100K+ (up from 1K)
+- **Infrastructure cost**: 60% reduction
+
+## What I'd Improve
+
+1. **Query builder UX**: The current interface assumes SQL familiarity. A visual query builder would make the tool more accessible.
+
+2. **Caching strategy**: We cache aggressively but invalidation is crude. A smarter cache with partial invalidation would improve hit rates.
+
+3. **Error boundaries**: Some visualization errors crash the entire dashboard. Better error isolation would improve reliability.
+
+## Links
+
+- [GitHub Repository](https://github.com/{{GITHUB_USERNAME}}/analytics-dashboard)
+- [Live Demo](https://analytics-demo.{{YOUR_DOMAIN}})
+
