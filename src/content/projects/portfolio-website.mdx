@@ -1,0 +1,60 @@
+---
+title: "Portfolio Website"
+description: "A minimal, personal portfolio built with Astro to showcase my projects, experiments, and make it easier for people to learn about me."
+publishedAt: 2026-01-01
+tags: ["Astro", "TypeScript", "Tailwind CSS", "MDX"]
+
+# Project classification
+projectType: "side-project"
+status: "completed"
+timeSpent: "2 days"
+
+# Links
+repoUrl: "https://github.com/Jacob-Wong/portfolio"
+# liveUrl: "https://..."  # Not live yet
+
+draft: true
+---
+
+## Why I Built This
+
+I wanted a dedicated space on the internet that's truly mine — somewhere people can easily learn about me and what I've been working on.
+
+More than just a landing page, I needed a place to organise my side projects, experiments, and case studies. Scattered GitHub repos and random notes weren't cutting it. Having everything in one place helps me:
+
+- **Track what I've built** — Easy to forget projects after a few months
+- **Share my work** — A single link to send to anyone curious about my projects
+- **Reflect on learning** — Writing about projects helps solidify what I learned
+
+## Tech Stack
+
+Built this with a modern, minimal stack:
+
+- **Astro** — Static site generator with great content management. Perfect for a portfolio since it ships zero JavaScript by default.
+- **TypeScript** — Type safety for components and content schemas
+- **Tailwind CSS** — Utility-first styling with the typography plugin for beautiful prose
+- **MDX** — Markdown with components for writing project content
+- **Biome** — Fast linter and formatter (replaced ESLint + Prettier)
+
+## What I Learned
+
+A few things stood out during the build:
+
+### Astro's Content Collections
+
+The content collection system is really nice. Define a schema once, and you get full type safety when querying content. The project templates (side-project, case-study, experiment) made it easy to have different layouts for different types of content.
+
+### Tailwind Typography Plugin
+
+The `@tailwindcss/typography` plugin handles all the prose styling — headings, paragraphs, code blocks, lists. Just add the `prose` class and it looks great out of the box.
+
+### Keeping It Simple
+
+The biggest win was resisting the urge to over-engineer. No complex state management, no heavy frameworks. Just static HTML with great developer experience. The site loads fast and is easy to maintain.
+
+## What's Next
+
+- Add more projects as I build them
+- Maybe add a blog section later
+
+For now, it does exactly what I needed — a clean home for my work.
