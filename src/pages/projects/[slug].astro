@@ -1,6 +1,7 @@
 ---
 import { getCollection, type CollectionEntry } from 'astro:content';
 import CaseStudyLayout from '../../layouts/CaseStudyLayout.astro';
+import ProjectLayout from '../../layouts/ProjectLayout.astro';
 
 export async function getStaticPaths() {
   const projects = await getCollection('projects', ({ data }) => {
@@ -19,9 +20,18 @@ interface Props {
 
 const { project } = Astro.props;
 const { Content, headings } = await project.render();
+
+// Use CaseStudyLayout for case-study type, ProjectLayout for everything else
+const isCaseStudy = project.data.projectType === 'case-study';
 ---
 
-<CaseStudyLayout project={project} headings={headings}>
-  <Content />
-</CaseStudyLayout>
+{isCaseStudy ? (
+  <CaseStudyLayout project={project} headings={headings}>
+    <Content />
+  </CaseStudyLayout>
+) : (
+  <ProjectLayout project={project}>
+    <Content />
+  </ProjectLayout>
+)}
 
